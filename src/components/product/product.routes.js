@@ -1,40 +1,30 @@
-const express = require("express");
+import express from "express";
 
 const productRouter = express.Router();
 
-const { catchErrors } = require("../../library/helpers/errorFormatHelpers");
+import {
+  editProduct,
+  getAllProducts,
+  getProductLikes,
+  getOneProduct,
+  getRelatedProducts,
+  postProduct,
+  removeProduct,
+  searchProductByTitle,
 
-const { getAuthorize } = require("../../library/middlewares/authMiddleware");
+} from "./product.controller.js";
+// import { validate, validateproductData } from "./product.validation.js";
+import { protect } from "../../middleware/auth2.js";
 
-const productController = require("./product.controllers");
-const { validateproduct } = require("./product.validator");
+productRouter.post("/create", postProduct);
+productRouter.get("/fetch-all", getAllProducts);
+productRouter.get("/fetch-one/:id", getOneProduct);
+productRouter.put("/edit/:product", protect, editProduct);
+productRouter.delete("/remove/:id", protect, removeProduct);
+productRouter.get("/search", searchProductByTitle)
+productRouter.post("/related-products", getRelatedProducts);
+productRouter.patch("/like/:id", protect, getProductLikes);
 
-productRouter.post(
-  "/create",
-  getAuthorize,
-  catchErrors(productController.createProduct)
-);
-productRouter.get(
-  "/fetch-product",
-  catchErrors(productController.getMyProducts)
-);
-productRouter.get(
-  "/fetch-all",
-  catchErrors(productController.getAllProductByAdmin)
-);
-productRouter.put(
-  "/edit/:productId",
-  getAuthorize,
-  catchErrors(productController.updateProduct)
-);
-productRouter.delete(
-  "/remove/:productId",
-  getAuthorize,
-  catchErrors(productController.deleteProduct)
-);
-productRouter.get(
-  "/fetch-one/:id",
-  catchErrors(productController.getSingleProduct)
-);
 
-module.exports = productRouter;
+export default productRouter;
+

@@ -1,7 +1,21 @@
-if (process.env.NODE_ENV === "production") {
-  module.exports = require("./prod");
-} else if (process.env.NODE_ENV === "ci") {
-  module.exports = require("./ci");
-} else {
-  module.exports = require("./dev");
+const dotenv = require('dotenv');
+
+const envFound = dotenv.config({ path: '.env' });
+if (!envFound) {
+  throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
+
+module.exports = {
+  appName: 'property-management-app',
+  port: 5000,
+  dbURI: 'mongodb://localhost:27017/new-e-store-002 ',
+  dbURI: process.env.MONGO_URI,
+  jwtSecret: '3p48-94i1u08qfhdj489135u0t9324i=2r02jf449u130',
+  tokenType: 'Bearer',
+  logs: {
+    level: process.env.LOG_LEVEL || 'silly',
+  },
+  api: {
+    prefix: process.env.API_PREFIX,
+  },
+};

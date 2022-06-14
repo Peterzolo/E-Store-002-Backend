@@ -1,66 +1,48 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
-mongoose.Promise = global.Promise;
-
-const UserSchema = new Schema(
+const UserSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
-      trim: true,
       required: true,
     },
     lastName: {
       type: String,
-      trim: true,
       required: true,
     },
     email: {
       type: String,
-      unique: true,
-      lowercase: true,
-      trim: true,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
-      trim: true,
     },
-
-    avatar: {
+    googleId: {
       type: String,
-      trim: true,
-      default:
-        "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/",
-    },
-    verified: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
     },
     status: {
       type: String,
       enum: ["active", "inactive"],
       default: "active",
     },
-
-    resetPassword: String,
-    resetPasswordToken: String,
-    resetPasswordExpires: Date,
   },
-  {
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
-  },
-  { collection: "users" }
+  { timestamps: true }
 );
+
+// UserSchema.methods.generateAuthToken = function () {
+//   const token = jwt.sign(
+//     {
+//       _id: this._id,
+//       email: this.email,
+//       firstName: this.firstName,
+//       lastName: this.lastName,
+//     },
+//     process.env.JWTPRIVATEKEY
+//   );
+//   return token;
+// };
 
 UserSchema.pre("save", async function (next) {
   try {
@@ -78,5 +60,4 @@ UserSchema.pre("save", async function (next) {
 });
 
 const User = mongoose.model("user", UserSchema);
-
-module.exports = User;
+export default User;

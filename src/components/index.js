@@ -1,32 +1,14 @@
-const userRoutes = require("./user/user.routes");
-const categoryRoute = require("./category/category.routes");
-const productRoute = require("./product/product.routes");
-const orderRoute = require("./order/order.routes");
-const cartRoute = require("./cart/cart.routes");
-const singleFileRoute = require("./fileUpload/fileUpload.routes")
-const stripeRoute = require('./stripe/stripe.route')
-const componentModule = {
+import userRoutes from "./user/user.route.js";
+import productRoutes from "./product/product.routes.js"
+
+
+ export const componentModule = {  
   userModule: {
-    routes: userRoutes,    
-  },
-  categoryModule: {
-    routes: categoryRoute,
+    routes: userRoutes,
   },
   productModule: {
-    routes: productRoute,
-  },
-  orderModule: {
-    routes: orderRoute,
-  },
-  cartModule: {
-    routes: cartRoute,
-  },
-  singleFileModule: {
-    routes: singleFileRoute,
-  },
-  stripeModule: {
-    routes: stripeRoute,
+    routes: productRoutes,
   },
 };
 
-module.exports = componentModule;
+// export default componentModule;

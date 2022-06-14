@@ -1,46 +1,21 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const cors = require("cors");
-const helmet = require("helmet");
-const cookieParser = require("cookie-parser");
-const handler = require("./library/helpers/errorHandlers");
-const config = require("./config");
-const {
-  userModule,
-  categoryModule,
-  productModule,
-  orderModule,
-  cartModule,
-  singleFileModule,
-  stripeModule,
-} = require("./components");
-
 const app = express();
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
 
-require("dotenv").config();
-app.use(express.json());
-app.use(cors());
+import {componentModule} from "../src/components/index.js"
+
+app.use(express.static("public"));
+
 app.use(morgan("dev"));
-app.use(bodyParser.json({ limit: "20mb" }));
-app.use(
-  bodyParser.urlencoded({
-    limit: "20mb",
-    extended: true,
-  })
-);
-app.use(cookieParser());
-app.use(helmet());
-app.set("trust proxy", 1);
+app.use(express.json({ limit: "32mb", extended: true }));
+app.use(express.urlencoded({ limit: "32mb", extended: true }));
 
-app.use(`/api/user`, userModule.routes);
-app.use(`/api/category`, categoryModule.routes);
-app.use(`/api/product`, productModule.routes);
-app.use(`/api/order`, orderModule.routes);
-app.use(`/api/cart`, cartModule.routes);
-app.use(`/api/singleFile`, singleFileModule.routes);
-app.use(`/api/stripe`, stripeModule.routes);
 
-handler.handleErrors(app);
+app.use(cors());
 
-module.exports = app;  
+
+app.use("/api/user", componentModule.userModule.routes)
+app.use("/api/product", componentModule.productModule.routes)
+
+export default app;
