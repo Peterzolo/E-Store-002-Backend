@@ -6,10 +6,7 @@ export const saveProductPayload = async (args) => {
 };
 
 export const fetchAllProducts = async () => {
-  const product = await Product.find({ status: "active" }).populate(
-    "vendor",
-    "-password"
-  );
+  const product = await Product.find({ status: "active" })
   return product;
 };
 

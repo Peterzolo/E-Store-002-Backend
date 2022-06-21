@@ -7,6 +7,7 @@ import ApiError from "../../error/ApiError.js";
 
 export const createProduct = async ({
  
+  vendor,
   name,
   image,
   category,
@@ -22,6 +23,7 @@ export const createProduct = async ({
   status,
 }) => {
   const productObject = {
+    vendor,
     name,
     image,
     category,
@@ -47,6 +49,7 @@ export const createProduct = async ({
   return {
    
     createdAt: new Date().toISOString(),
+    vendor: product.vendor,
     name: product.name,
     image: product.image,
     category: product.category,

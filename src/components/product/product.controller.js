@@ -11,9 +11,11 @@ import ApiError from '../../error/ApiError.js';
 import { findUserById } from '../user/user.dao.js';
 import Product from './product.model.js';
 
+
 export const postProduct = async (req, res) => {
   try {
     const {
+      vendor,
       name,
       image,
       category,
@@ -30,6 +32,7 @@ export const postProduct = async (req, res) => {
     } = req.body;
 
     const dataObject = {
+      vendor,
       name,
       image,
       category,
@@ -56,62 +59,70 @@ export const postProduct = async (req, res) => {
   }
 };
 
-// export const getAllProducts = async (req, res) => {
-//   try {
-//     const allProducts = await fetchAllProducts();
-//     if (!allProducts.length) {
-//       throw ApiError.notFound({ message: "No data found" });
-//     }
-//     res.status(200).json({
-//       dataCount: allProducts.length,
-//       success: true,
-//       message: "Successfully fetched all local Product",
-//       data: allProducts,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+export const getAllProducts = async (req, res) => {
+  try {
+    const allProducts = await fetchAllProducts();
+    if (!allProducts.length) {
+      throw ApiError.notFound({ message: "No data found" });
+    }
+    res.status(200).json({
+      dataCount: allProducts.length,
+      success: true,
+      message: "Successfully fetched all local Product",
+      data: allProducts,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 //////////////////////////////////////////////////////////////////////////
 
-export const getAllProducts = async (req, res) => {
-  const { page } = req.query;
-  try {
-    // const tours = await TourModal.find();
-    // res.status(200).json(tours);
-
-    const limit = 6;
-    const startIndex = (Number(page) - 1) * limit;
-    const total = await Product.countDocuments({});
-    const Products = await Product.find().limit(limit).skip(startIndex);
-    res.json({
-      data: Products,
-      currentPage: Number(page),
-      totalProducts: total,
-      numberOfPages: Math.ceil(total / limit),
-    });
-  } catch (error) {
-    res.status(404).json({ message: 'Something went wrong' });
-  }
-};
+// export const getAllProducts = async (req, res) => {
+//   const { page } = req.query;
+//   try {
+   
+//     const limit = 6;
+//     const startIndex = (Number(page) - 1) * limit;
+//     const total = await Product.countDocuments({});
+//     const Products = await Product.find().limit(limit).skip(startIndex);
+//     res.json({
+//       data: Products,
+//       currentPage: Number(page),
+//       totalProducts: total,
+//       numberOfPages: Math.ceil(total / limit),
+//     });
+//   } catch (error) {
+//     res.status(404).json({ message: 'Something went wrong' });
+//   }
+// };
 
 ///////////////////////////////////////////////////////////////////
 
 export const getOneProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const Product = await findProductById(id);
-    if (!Product) {
-      throw ApiError.notFound({ message: "Could't find" });
+
+    const product = await findProductById(id);
+
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //   throw ApiError.notFound({ message: "Invalid product id" });
+    // }
+
+    // if(id !== product._id.toString()){
+    //   throw ApiError.notFound({ message: "Invalid product id" });  
+    // }
+
+    if (!product) {
+      throw ApiError.notFound({ message: "Product Not found" });
     }
     res.status(200).json({
       success: true,
       message: 'Successfully fetched local Product',
-      data: Product,
+      data: product,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 

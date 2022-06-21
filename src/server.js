@@ -1,7 +1,9 @@
 import dotenv  from 'dotenv';
 import app from "./app.js";
-import databaseConnection from './config/database.js'
+// import { databaseConn } from './config/database.js';
+
 import apiErrorHandler from "./error/api-error-handler.js"
+import { mongoConnection } from './new-config/new-databaseConn.js';
 
 
 
@@ -9,7 +11,10 @@ import apiErrorHandler from "./error/api-error-handler.js"
 dotenv.config()  
 
 
-databaseConnection()
+// databaseConn()
+mongoConnection()
+
+
 
 app.get("/", (req, res) =>{
  res.send("index")
