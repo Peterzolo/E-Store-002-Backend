@@ -8,6 +8,7 @@ export const register = async (req, res) => {
       lastName: body.lastName,
       email: body.email,
       password: body.password,
+      isAdmin : body.isAdmin,
       status: body.status,
     };
     const user = await createUser(userObject);

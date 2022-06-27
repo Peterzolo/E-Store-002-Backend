@@ -4,7 +4,7 @@ import productRoutes from "./product/product.routes.js"
 
  export const componentModule = {  
   userModule: {
-    routes: userRoutes,   
+    routes: userRoutes,      
   },
   productModule: {
     routes: productRoutes,

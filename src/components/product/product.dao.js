@@ -15,6 +15,11 @@ export const findProductById = async (id) => {
   return product;
 };
 
+// export const findOneProduct = async(id) =>{
+//   const product = await Product.findById({_id : id})
+//   return product
+// }
+
 export const findProductByName = async (query) => {
   const product = await Product.findOne(query);
   return product;

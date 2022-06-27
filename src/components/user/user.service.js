@@ -9,6 +9,7 @@ export const createUser = async ({
   lastName,
   email,
   password,
+  isAdmin,
   status,
 }) => {
   const findUser = await findUserByEmail({ email });
@@ -21,6 +22,7 @@ export const createUser = async ({
     lastName,
     email,
     password,
+    isAdmin,
     status,
   };
 
@@ -29,6 +31,7 @@ export const createUser = async ({
   const payload = {
     _id: savedUser._id,
     email: savedUser.email,
+    isAdmin : savedUser.isAdmin
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -40,6 +43,7 @@ export const createUser = async ({
     lastName: savedUser.lastName,
     email: savedUser.email,
     _id: savedUser._id,
+    isAdmin : savedUser.isAdmin,
     token,
     status,
   };
@@ -64,6 +68,7 @@ export const signIn = async (email, password) => {
   const payload = {
     _id: user._id,
     email: user.email,
+    isAdmin : user.isAdmin
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -75,6 +80,7 @@ export const signIn = async (email, password) => {
     lastName: user.lastName,
     email: user.email,
     _id: user._id,
+    isAdmin : user.isAdmin,
     token,
   };
 };

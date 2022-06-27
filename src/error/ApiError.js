@@ -21,12 +21,10 @@ class ApiError {
   static wrongCredential(msg) {
     return new ApiError(401, msg);
   }
-  static productExists(msg) {
+  static userExists(msg) {
     return new ApiError(409, msg);
   }
-  static productExists(msg) {
-    return new ApiError(409, msg);
-  }
+ 
 }
 
 export default ApiError;

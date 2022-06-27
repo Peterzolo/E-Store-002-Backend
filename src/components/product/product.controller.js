@@ -6,11 +6,9 @@ import {
   findProductOwnerById,
   updateProduct,
 } from './product.dao.js';
-import { createProduct } from './product.service.js';
 import ApiError from '../../error/ApiError.js';
 import { findUserById } from '../user/user.dao.js';
 import Product from './product.model.js';
-
 
 export const postProduct = async (req, res) => {
   try {
@@ -63,12 +61,12 @@ export const getAllProducts = async (req, res) => {
   try {
     const allProducts = await fetchAllProducts();
     if (!allProducts.length) {
-      throw ApiError.notFound({ message: "No data found" });
+      throw ApiError.notFound({ message: 'No data found' });
     }
     res.status(200).json({
       dataCount: allProducts.length,
       success: true,
-      message: "Successfully fetched all local Product",
+      message: 'Successfully fetched all local Product',
       data: allProducts,
     });
   } catch (error) {
@@ -81,7 +79,7 @@ export const getAllProducts = async (req, res) => {
 // export const getAllProducts = async (req, res) => {
 //   const { page } = req.query;
 //   try {
-   
+
 //     const limit = 6;
 //     const startIndex = (Number(page) - 1) * limit;
 //     const total = await Product.countDocuments({});
@@ -101,28 +99,20 @@ export const getAllProducts = async (req, res) => {
 
 export const getOneProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const product = await findProductById(id);
-
-    // if (!mongoose.Types.ObjectId.isValid(id)) {
-    //   throw ApiError.notFound({ message: "Invalid product id" });
-    // }
-
-    // if(id !== product._id.toString()){
-    //   throw ApiError.notFound({ message: "Invalid product id" });  
-    // }
-
-    if (!product) {
-      throw ApiError.notFound({ message: "Product Not found" });
+    const  id  = req.params.id;
+    const findProduct = await findProductById(id);
+    if (findProduct) {
+      const product = findProduct;
+      res.status(200).send({
+        Success: true,
+        message: 'Product successfully fetched',
+        data: product,
+      });
+    } else {
+      res.status(401).send({ message: 'Product Not Found' });
     }
-    res.status(200).json({
-      success: true,
-      message: 'Successfully fetched local Product',
-      data: product,
-    });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+    res.status(400).send({ message: "Error has occured" });
   }
 };
 
