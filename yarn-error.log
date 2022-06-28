@@ -1,0 +1,68 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin\;C:\Users\SirP\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\SirP\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\SirP\AppData\Local\Programs\Python\Python310\;C:\Users\SirP\AppData\Local\Microsoft\WindowsApps;C:\Users\SirP\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Users\SirP\AppData\Local\Yarn\bin;C:\Users\SirP\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\SirP\AppData\Roaming\nvm;C:\Program Files\nodejs
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.4.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141517:19)
+      at Object.onceWrapper (node:events:651:28)
+      at ClientRequest.emit (node:events:537:28)
+      at TLSSocket.emitRequestTimeout (node:_http_client:781:9)
+      at Object.onceWrapper (node:events:651:28)
+      at TLSSocket.emit (node:events:549:35)
+      at Socket._onTimeout (node:net:525:8)
+      at listOnTimeout (node:internal/timers:564:17)
+      at process.processTimers (node:internal/timers:507:7)
+
+npm manifest: 
+  {
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "The news platform",
+    "main": "server",
+    "type": "module",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node src/server.js",
+      "dev": "nodemon src/server.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Peterzolo/Event-Look-Up.git"
+    },
+    "author": "Peter Solomon",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/Peterzolo/Event-Look-Up.git"
+    },
+    "homepage": "https://github.com/Peterzolo/Event-Look-Up.git",
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "body-parser": "^1.20.0",
+      "concurrently": "^7.2.1",
+      "cors": "^2.8.5",
+      "dotenv": "^16.0.1",
+      "express": "^4.18.1",
+      "express-validator": "^6.14.1",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^6.4.0",
+      "morgan": "^1.10.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
