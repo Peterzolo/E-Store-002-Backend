@@ -10,7 +10,7 @@ const OrderSchema = mongoose.Schema(
         image: { type: String, required: true },
         price: { type: Number, required: true },
         product: {
-          type:Schema.Types.ObjectId,
+          type: Schema.Types.ObjectId,
           ref: 'product',
           required: true,
         },
@@ -22,10 +22,15 @@ const OrderSchema = mongoose.Schema(
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
-      lat: {type : Number},
-      lng: {type : Number},
+      lat: { type: Number },
+      lng: { type: Number },
     },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: {
+      type: String,
+      enum: ['Paypal', 'Stripe'],
+      default: 'Paypal',
+      required: true,
+    },
     paymentResult: {
       id: String,
       status: String,
@@ -36,18 +41,24 @@ const OrderSchema = mongoose.Schema(
     shippingPrice: { type: Number, required: true },
     taxPrice: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
-    user: {  type:Schema.Types.ObjectId, ref: 'user', required: true },
-    seller: {   type:Schema.Types.ObjectId,ref: 'user' },
+    user: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+    seller: { type: Schema.Types.ObjectId, ref: 'user' },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
+    status: {
+      type: String,
+      enum: ['active', 'inactive'],
+      default: 'active',
+    },
   },
+
   {
     timestamps: true,
   }
 );
 
-const Order = mongoose.model('product', OrderSchema);
+const Order = mongoose.model('order', OrderSchema);
 
-module.exports =  Order;
+export default Order;

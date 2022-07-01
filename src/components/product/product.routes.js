@@ -16,7 +16,7 @@ import {
 // import { validate, validateproductData } from "./product.validation.js";
 import { protect } from "../../middleware/auth2.js";
 
-productRouter.post("/create", postProduct);
+productRouter.post("/create",protect, postProduct);
 productRouter.get("/fetch-all", getAllProducts);
 productRouter.get("/fetch-one/:id", getOneProduct);
 productRouter.put("/edit/:product", protect, editProduct);

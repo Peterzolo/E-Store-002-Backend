@@ -1,5 +1,6 @@
 import userRoutes from "./user/user.route.js";
 import productRoutes from "./product/product.routes.js"
+import orderRoutes from "./order/order.routes.js"
 
 
  export const componentModule = {  
@@ -9,6 +10,9 @@ import productRoutes from "./product/product.routes.js"
   productModule: {
     routes: productRoutes,
   },
+  orderModule: {
+    routes: orderRoutes,
+  },
 };
 
-// export default componentModule;
+

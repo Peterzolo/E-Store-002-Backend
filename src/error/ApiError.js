@@ -24,6 +24,9 @@ class ApiError {
   static userExists(msg) {
     return new ApiError(409, msg);
   }
+  static fieldRequired(msg) {
+    return new ApiError(409, msg);
+  }
  
 }
 

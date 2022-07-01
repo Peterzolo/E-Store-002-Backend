@@ -15,5 +15,6 @@ app.use(cors());
 
 app.use('/api/user', componentModule.userModule.routes);
 app.use('/api/product', componentModule.productModule.routes);
+app.use('/api/order', componentModule.orderModule.routes);
 
 export default app;

@@ -10,12 +10,14 @@ export const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-
+      console.log('Token',token)
       if (!token) {
-        throw ApiError.forbidden({ message: "Token not provided" });
+       res.send({message : "You are not authorized to perform this task"})
       } else {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.userId = decoded?._id;
+        req.isAdmin = decoded.isAdmin;
+        req.email = decoded.email
         next();
       }
     } catch (error) {

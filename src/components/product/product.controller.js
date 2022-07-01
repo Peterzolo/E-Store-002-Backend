@@ -9,6 +9,7 @@ import {
 import ApiError from '../../error/ApiError.js';
 import { findUserById } from '../user/user.dao.js';
 import Product from './product.model.js';
+import { createProduct } from './product.service.js';
 
 export const postProduct = async (req, res) => {
   try {
