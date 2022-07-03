@@ -16,7 +16,7 @@ import { protect } from '../../middleware/auth2.js';
 
 orderRouter.post('/create',protect, postOrder);
 orderRouter.get('/fetch-all', getAllOrders);
-orderRouter.get('/fetch-one/:id', getOneOrder);
+orderRouter.get('/fetch-one/:id',protect, getOneOrder);
 orderRouter.put('/edit/:order', protect, editOrder);
 orderRouter.delete('/remove/:id', protect, removeOrder);
 orderRouter.get('/search', searchOrderByTitle);

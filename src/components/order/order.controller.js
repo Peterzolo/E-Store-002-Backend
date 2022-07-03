@@ -16,9 +16,14 @@ export const postOrder = async (req, res) => {
     const {
       user,
       orderItems,
+      seller,
+      isPaid,
+      paidAt,
+      isDelivered,
+      deliveredAt,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
+      itemPrice,
       shippingPrice,
       taxPrice,
       totalPrice,
@@ -26,14 +31,19 @@ export const postOrder = async (req, res) => {
     } = req.body;
 
     const userId = req.userId;
-    console.log('USER ID',userId)
+   
 
     const dataObject = {
       user: userId,
       orderItems,
+      seller,
+      isPaid,
+      paidAt,
+      isDelivered,
+      deliveredAt,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
+      itemPrice,
       shippingPrice,
       taxPrice,
       totalPrice,
@@ -44,7 +54,7 @@ export const postOrder = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Order successfully created',
-      data: orderData,
+      result: orderData,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -96,11 +106,11 @@ export const getOneOrder = async (req, res) => {
     const id = req.params.id;
     const findOrder = await findOrderById(id);
     if (findOrder) {
-      const Order = findOrder;
+      const order = findOrder;
       res.status(200).send({
         Success: true,
         message: 'Order successfully fetched',
-        data: Order,
+        result: order,
       });
     } else {
       res.status(401).send({ message: 'Order Not Found' });

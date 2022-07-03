@@ -7,7 +7,7 @@ export const saveOrderPayload = async (args) => {
 
 export const fetchAllOrders = async () => {
   const order = await Order.find({ status: 'active' }).populate(
-    'user product',
+    'user',
     '-password'
   );
   return order;
