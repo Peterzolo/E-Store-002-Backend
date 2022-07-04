@@ -9,6 +9,7 @@ import {
   postOrder,
   removeOrder,
   searchOrderByTitle,
+  updateOrderPayment,
 } from './order.controller.js';
 // import { validate, validateorderData } from "./order.validation.js";
 import { protect } from '../../middleware/auth2.js';
@@ -17,6 +18,7 @@ import { protect } from '../../middleware/auth2.js';
 orderRouter.post('/create',protect, postOrder);
 orderRouter.get('/fetch-all', getAllOrders);
 orderRouter.get('/fetch-one/:id',protect, getOneOrder);
+orderRouter.put('/update/:id',protect, updateOrderPayment);
 orderRouter.put('/edit/:order', protect, editOrder);
 orderRouter.delete('/remove/:id', protect, removeOrder);
 orderRouter.get('/search', searchOrderByTitle);

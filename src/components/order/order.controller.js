@@ -23,6 +23,7 @@ export const postOrder = async (req, res) => {
       deliveredAt,
       shippingAddress,
       paymentMethod,
+      paymentResult,
       itemPrice,
       shippingPrice,
       taxPrice,
@@ -31,7 +32,6 @@ export const postOrder = async (req, res) => {
     } = req.body;
 
     const userId = req.userId;
-   
 
     const dataObject = {
       user: userId,
@@ -43,6 +43,7 @@ export const postOrder = async (req, res) => {
       deliveredAt,
       shippingAddress,
       paymentMethod,
+      paymentResult,
       itemPrice,
       shippingPrice,
       taxPrice,
@@ -291,5 +292,30 @@ export const getOrderLikes = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+};
+
+export const updateOrderPayment = async (req, res) => {
+  const id = req.params.id;
+  console.log('ID',id)
+  const findOrder = await findOrderById(id);
+  console.log('FIND ORDER',findOrder)
+  if (findOrder) {
+    (findOrder.isPaid = true),
+      (findOrder.paidAt = Date.now()),
+      (findOrder.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address,
+      });
+    const updatedOrder = await  findOrder.save();
+    res.status(201).send({
+      success: true,
+      message: 'Order successfully updated',
+      result: updatedOrder,
+    });
+  } else {
+    res.status(400).send({ message: 'Order not found' });
   }
 };
