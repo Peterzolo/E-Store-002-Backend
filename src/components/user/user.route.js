@@ -8,5 +8,6 @@ userRouter.post("/register", register);
 userRouter.post("/login", userLogin);
 userRouter.get("/fetch-all", fetchAllUsers);
 userRouter.get("/fetch-one/:id", fetchUserDetails);
+userRouter.put("/profile", protect, fetchUserDetails);
 
 export default userRouter;
