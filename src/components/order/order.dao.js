@@ -13,6 +13,14 @@ export const fetchAllOrders = async () => {
   return order;
 };
 
+export const fetchUserOrderHistory = async (userId) => {
+  const orders = await Order.find({ user: userId, status: 'active' }).populate(
+    'user',
+    '-password'
+  );
+  return orders;
+};
+
 export const findOrderById = async (id) => {
   const order = await Order.findById({ _id: id, status: 'active' });
   return order;

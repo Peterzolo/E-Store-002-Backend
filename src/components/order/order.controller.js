@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import {
   deleteOrder,
   fetchAllOrders,
+  fetchUserOrderHistory,
   findOrderById,
   findOrderOwnerById,
   updateOrder,
@@ -297,9 +298,9 @@ export const getOrderLikes = async (req, res) => {
 
 export const updateOrderPayment = async (req, res) => {
   const id = req.params.id;
-  console.log('ID',id)
+  console.log('ID', id);
   const findOrder = await findOrderById(id);
-  console.log('FIND ORDER',findOrder)
+  console.log('FIND ORDER', findOrder);
   if (findOrder) {
     (findOrder.isPaid = true),
       (findOrder.paidAt = Date.now()),
@@ -309,7 +310,7 @@ export const updateOrderPayment = async (req, res) => {
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       });
-    const updatedOrder = await  findOrder.save();
+    const updatedOrder = await findOrder.save();
     res.status(201).send({
       success: true,
       message: 'Order successfully updated',
@@ -317,5 +318,24 @@ export const updateOrderPayment = async (req, res) => {
     });
   } else {
     res.status(400).send({ message: 'Order not found' });
+  }
+};
+
+export const getUserOrderHistory = async (req, res) => {
+  const userId = req.userId;
+  console.log('USER ID',userId)
+
+  const userOrders = await fetchUserOrderHistory(userId);
+  if(userOrders.length < 1){
+    return res.send({message : "No orders found"})
+  }
+  if (userOrders) {
+    res.status(201).send({
+      success: true,
+      message: 'Successffully fetched orders',  
+      result: userOrders,
+    });
+  } else {
+    res.status(403).send({ message: 'Error occured' });
   }
 };
