@@ -1,8 +1,7 @@
 import User from './user.model.js';
 
 export const findUserById = async (id) => {
-  const user = await User.findById(id).populate("")
-  .select("-password");
+  const user = await User.findById(id).select('-password');
   return user;
 };
 
@@ -12,8 +11,7 @@ export const findUserByEmail = async (email) => {
 };
 
 export const findAllUsers = async () => {
-  const users = await User.find({ status: 'active' }).populate("")
-  .select("-password")
+  const users = await User.find({ status: 'active' }).select('-password');
   return users;
 };
 

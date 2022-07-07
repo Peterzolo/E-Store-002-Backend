@@ -2,6 +2,7 @@ import { findOrderById } from '../order/order.dao.js';
 import { findAllUsers, findUserById } from './user.dao.js';
 import { createUser, signIn } from './user.service.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 export const register = async (req, res) => {
   const body = req.body;
@@ -41,7 +42,6 @@ export const userLogin = async (req, res) => {
 
 export const fetchAllUsers = async (req, res) => {
   const users = await findAllUsers();
-  console.log('USERS', users);
 
   if (users.length < 1) {
     res.status(402).send({ message: 'Users not found' });
@@ -57,7 +57,6 @@ export const fetchUserDetails = async (req, res) => {
   const id = req.params.id;
 
   const findUser = await findUserById(id);
-  console.log('FIND USER', findUser);
 
   if (!findUser) {
     res.status(402).send({ message: 'User not found' });
@@ -74,18 +73,10 @@ export const updateUserprofile = async (req, res) => {
   const userId = req.userId;
 
   const user = await findUserById(userId);
-
   if (user) {
     user.firstName = req.body.firstName || user.firstName;
     user.lastName = req.body.lastName || user.lastName;
     user.email = req.body.email || user.email;
-
-    // if (user.isSeller) {
-    //   user.seller.name = req.body.sellerName || user.seller.name;
-    //   user.seller.logo = req.body.sellerLogo || user.seller.logo;
-    //   user.seller.description =
-    //     req.body.sellerDescription || user.seller.description;
-    // }
 
     if (req.body.password) {
       user.password = bcrypt.hashSync(req.body.password, 8);
