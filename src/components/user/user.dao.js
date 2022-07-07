@@ -6,11 +6,11 @@ export const findUserById = async (id) => {
 };
 
 export const findUserByEmail = async (email) => {
-  const user = await User.findOne(email);
+  const user = await User.findOne(email);    
   return user;
 };
 
-export const findAllUsers = async () => {
+export const findAllUsers = async () => {    
   const users = await User.find({ status: 'active' }).select('-password');
   return users;
 };

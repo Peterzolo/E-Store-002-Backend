@@ -11,7 +11,7 @@ export const register = async (req, res) => {
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
-      password: body.password,
+      password: body.password,   
       isAdmin: body.isAdmin,
       status: body.status,
     };
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
     res.status(200).json({
       Success: true,
       Message: 'User successfully registered',
-      data: user,
+      result: user,
     });
   } catch (error) {
     res.status(500).json(error.message);
@@ -33,7 +33,7 @@ export const userLogin = async (req, res) => {
     res.status(200).json({
       Success: true,
       message: 'User successfully logged in',
-      data: user,
+      result: user,
     });
   } catch (error) {
     res.status(500).json(error.message);
@@ -95,7 +95,7 @@ export const updateUserprofile = async (req, res) => {
       expiresIn: '1d',
     });
 
-    res.send({
+    const savedUserProfile = {
       _id: updatedUser._id,
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
@@ -103,6 +103,12 @@ export const updateUserprofile = async (req, res) => {
       isAdmin: updatedUser.isAdmin,
       // isSeller: user.isSeller,
       token,
+    }
+
+    res.send({
+      success : true,
+      message : "Profile successfully updated",
+      result : savedUserProfile
     });
   }
 };
