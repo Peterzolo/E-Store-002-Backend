@@ -1,7 +1,7 @@
 import User from './user.model.js';
 
 export const findUserById = async (id) => {
-  const user = await User.findById(id).select('-password');
+  const user = await User.findById(id).select('-password');   
   return user;
 };
 

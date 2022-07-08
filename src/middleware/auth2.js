@@ -21,3 +21,12 @@ export const protect = (req, res, next) => {
     res.status(401).send({ message: 'No Token' });
   }
 };
+
+
+export const isAdmin = (req, res, next) => {
+  if (req.userId && req.userId.isAdmin) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Not authorized' });
+  }
+};

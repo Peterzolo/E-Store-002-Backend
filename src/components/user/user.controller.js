@@ -53,17 +53,17 @@ export const fetchAllUsers = async (req, res) => {
     });
   }
 };
-export const fetchUserDetails = async (req, res) => {
+export const fetchUserDetails = async (req, res) => {   
   const id = req.params.id;
 
   const findUser = await findUserById(id);
 
   if (!findUser) {
-    res.status(402).send({ message: 'User not found' });
+    res.status(402).send({ message: 'User not found' });      
   } else {
     res.status(201).send({
       success: true,
-      message: 'User successfully fetched',
+      message: 'User successfully fetched',   
       result: findUser,
     });
   }
