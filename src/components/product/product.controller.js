@@ -74,28 +74,7 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-//////////////////////////////////////////////////////////////////////////
 
-// export const getAllProducts = async (req, res) => {
-//   const { page } = req.query;
-//   try {
-
-//     const limit = 6;
-//     const startIndex = (Number(page) - 1) * limit;
-//     const total = await Product.countDocuments({});
-//     const Products = await Product.find().limit(limit).skip(startIndex);
-//     res.json({
-//       data: Products,
-//       currentPage: Number(page),
-//       totalProducts: total,
-//       numberOfPages: Math.ceil(total / limit),
-//     });
-//   } catch (error) {
-//     res.status(404).json({ message: 'Something went wrong' });
-//   }
-// };
-
-///////////////////////////////////////////////////////////////////
 
 export const getOneProduct = async (req, res) => {
   try {
@@ -106,7 +85,7 @@ export const getOneProduct = async (req, res) => {
       res.status(200).send({
         Success: true,
         message: 'Product successfully fetched',
-        data: product,
+        result: product,
       });
     } else {
       res.status(401).send({ message: 'Product Not Found' });
