@@ -27,10 +27,9 @@ export const postProduct = async (req, res) => {
     } = req.body;
 
     const userId = req.user;
-  
 
     if (userId.isAdmin === false) {
-    return  res.status(402).send({ message: 'You are not authorized' });
+      return res.status(402).send({ message: 'You are not authorized' });
     }
 
     const dataObject = {
@@ -74,8 +73,6 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-
-
 export const getOneProduct = async (req, res) => {
   try {
     const id = req.params.id;
@@ -97,28 +94,34 @@ export const getOneProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
   try {
-    const { Product } = req.params;
-    const userId = req.userId._id;
+    const userId = req.user;
+    console.log('USER',userId)
+
+    if (userId.isAdmin === false) {
+      return res.status(402).send({ message: 'You are not authorized' });
+    }
+
+    const id = req.params.id;
     const updateData = req.body;
-    const findProduct = await findProductById(Product);
+
+    const findProduct = await findProductById(id);
 
     if (findProduct.status === 'inactive') {
-      throw ApiError.notFound({ message: 'Product not found' });
-    }
-
-    const query = Product;
-    const user = userId;
-    const update = updateData;
-
-    let editedProduct = await updateProduct(query, user, update);
-
-    if (!editedProduct) {
       throw ApiError.notFound({ message: 'Product not available' });
     }
+
+    const query = id;
+    const update = updateData;
+
+    let editedProduct = await updateProduct(query,update);
+
+    if (!editedProduct) {
+      throw ApiError.notFound({ message: 'Could not edit product' });
+    }
     return res.status(200).send({
-      message: 'Product updated successfully',
-      content: editedProduct,
       success: true,
+      message: 'Product updated successfully',
+      result: editedProduct,
     });
   } catch (error) {
     res.status(400).json(error.message);

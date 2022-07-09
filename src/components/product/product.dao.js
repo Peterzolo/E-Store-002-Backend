@@ -1,4 +1,4 @@
-import Product from "./product.model.js";
+import Product from './product.model.js';
 
 export const saveProductPayload = async (args) => {
   const payload = await Product.create(args);
@@ -6,12 +6,12 @@ export const saveProductPayload = async (args) => {
 };
 
 export const fetchAllProducts = async () => {
-  const product = await Product.find({ status: "active" })
+  const product = await Product.find({ status: 'active' });
   return product;
 };
 
 export const findProductById = async (id) => {
-  const product = await Product.findById({ _id: id, status: "active" });
+  const product = await Product.findById({ _id: id, status: 'active' });
   return product;
 };
 
@@ -25,9 +25,9 @@ export const findProductByName = async (query) => {
   return product;
 };
 
-export const updateProduct = async (id, userId, productObj) => {
+export const updateProduct = async (id, productObj) => {
   const product = await Product.findByIdAndUpdate(
-    { _id: id, user: userId },
+    { _id: id },
     { $set: productObj },
     { new: true }
   );
@@ -37,16 +37,16 @@ export const updateProduct = async (id, userId, productObj) => {
 export const deleteProduct = async (id, userId) => {
   const product = await Product.findByIdAndUpdate(
     { _id: id, user: userId },
-    { $set: { status: "inactive" } },
+    { $set: { status: 'inactive' } },
     { new: true }
   );
   return product;
 };
 
 export const findProductOwnerById = async (id) => {
-  const product = await Product.find({ status: "active", vendor: id }).populate(
-    "vendor",
-    "-password"
+  const product = await Product.find({ status: 'active', vendor: id }).populate(
+    'vendor',
+    '-password'
   );
   return product;
 };
