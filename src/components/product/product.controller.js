@@ -46,7 +46,6 @@ export const postProduct = async (req, res) => {
       status,
       createdAt: new Date().toString(),
     };
-    // const sender = req.userId;
     const productData = await createProduct(dataObject);
     res.status(200).json({
       success: true,
@@ -62,13 +61,13 @@ export const getAllProducts = async (req, res) => {
   try {
     const allProducts = await fetchAllProducts();
     if (!allProducts.length) {
-      throw ApiError.notFound({ message: 'No data found' });
+      throw ApiError.notFound({ message: 'No Product Found' });
     }
     res.status(200).json({
-      dataCount: allProducts.length,
+      numInStock: allProducts.length,
       success: true,
-      message: 'Successfully fetched all local Product',
-      data: allProducts,
+      message: 'Successfully fetched all products',
+      result: allProducts,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
