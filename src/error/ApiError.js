@@ -21,7 +21,7 @@ class ApiError {
   static wrongCredential(msg) {
     return new ApiError(401, msg);
   }
-  static userExists(msg) {
+  static alreadyExists(msg) {
     return new ApiError(409, msg);
   }
   static fieldRequired(msg) {

@@ -2,69 +2,55 @@ import {
   findProductById,
   findProductByName,
   saveProductPayload,
-} from "./product.dao.js";
-import ApiError from "../../error/ApiError.js";
+} from './product.dao.js';
+import ApiError from '../../error/ApiError.js';
 
 export const createProduct = async ({
- 
-  vendor,
-  name,
+  title,
   image,
   category,
   model,
   color,
   description,
   price,
-  stockCount,
   brand,
-  reviews,
-  rating,
   createdAt,
   status,
 }) => {
   const productObject = {
-    vendor,
-    name,
+    title,
     image,
     category,
     model,
     color,
     description,
     price,
-    stockCount,
     brand,
-    reviews,
-    rating,
     createdAt,
     status,
   };
 
-  const productExists = await findProductByName({ name });
+  const productExists = await findProductByName({ title });
 
   if (productExists) {
-    throw ApiError.productExists("Product with this name has already been posted");
+    throw ApiError.alreadyExists({message :
+      'Product with this title has already been created'}
+    );
   }
 
   const product = await saveProductPayload(productObject);
   return {
-   
     createdAt: new Date().toISOString(),
-    vendor: product.vendor,
-    name: product.name,
+  
+    title: product.title,
     image: product.image,
     category: product.category,
     model: product.model,
     color: product.color,
     description: product.status,
     price: product.price,
-    stockCount: product.stockCount,
     brand: product.brand,
-    reviews: product.reviews,
-    rating: product.rating,
     status: product.status,
-    // createdAt: product.createdAt,
     _id: product._id,
   };
 };
-
-

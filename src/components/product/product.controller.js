@@ -14,35 +14,35 @@ import { createProduct } from './product.service.js';
 export const postProduct = async (req, res) => {
   try {
     const {
-      vendor,
-      name,
+      title,
       image,
       category,
       model,
       color,
       description,
       price,
-      stockCount,
       brand,
-      reviews,
-      rating,
       createdAt,
       status,
     } = req.body;
 
+    const userId = req.user;
+  
+
+    if (userId.isAdmin === false) {
+    return  res.status(402).send({ message: 'You are not authorized' });
+    }
+
     const dataObject = {
-      vendor,
-      name,
+      title,
       image,
       category,
       model,
       color,
       description,
       price,
-      stockCount,
       brand,
-      reviews,
-      rating,
+      createdAt,
       status,
       createdAt: new Date().toString(),
     };
@@ -51,7 +51,7 @@ export const postProduct = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Product successfully created',
-      data: productData,
+      result: productData,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -100,7 +100,7 @@ export const getAllProducts = async (req, res) => {
 
 export const getOneProduct = async (req, res) => {
   try {
-    const  id  = req.params.id;
+    const id = req.params.id;
     const findProduct = await findProductById(id);
     if (findProduct) {
       const product = findProduct;
@@ -113,7 +113,7 @@ export const getOneProduct = async (req, res) => {
       res.status(401).send({ message: 'Product Not Found' });
     }
   } catch (error) {
-    res.status(400).send({ message: "Error has occured" });
+    res.status(400).send({ message: 'Error has occured' });
   }
 };
 

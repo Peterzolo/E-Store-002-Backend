@@ -3,12 +3,7 @@ const Schema = mongoose.Schema;
 
 const ProductSchema = mongoose.Schema(
   {
-    vendor: {
-      type: Schema.Types.ObjectId,
-      ref : "user",
-      required: true,
-    },
-    name: {
+    title: {
       type: String,
       required: true,
     },
@@ -21,6 +16,10 @@ const ProductSchema = mongoose.Schema(
       required: true,
     },
     color: {
+      type: String,
+      required: true,
+    },
+    brand: {
       type: String,
       required: true,
     },
@@ -38,14 +37,6 @@ const ProductSchema = mongoose.Schema(
       default: '',
     },
 
-    stockCount: { type: String, required : true },
-
-    brand: { type: String, required : true },
-
-    reviews: { type: Number, default : 0 },
-
-    rating: { type: Number, default : 0 }, 
-
     status: {
       type: String,
       enum: ['active', 'inactive'],
@@ -55,7 +46,6 @@ const ProductSchema = mongoose.Schema(
       type: Date,
       default: new Date(),
     },
-    
   },
   { timestamps: true }
 );

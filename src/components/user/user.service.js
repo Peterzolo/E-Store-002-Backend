@@ -5,22 +5,19 @@ import { findUserByEmail, saveUserPayload } from './user.dao.js';
 import ApiError from '../../error/ApiError.js';
 
 export const createUser = async ({
-  firstName,
-  lastName,
   email,
+  username,
   password,
   isAdmin,
   status,
 }) => {
   const findUser = await findUserByEmail({ email });
   if (findUser) {
-    // throw ApiError.userExist({ message: "User already exists" });
     throw ApiError.userExists({ message: 'User already exists' });
   }
   const userObject = {
-    firstName,
-    lastName,
     email,
+    username,
     password,
     isAdmin,
     status,
@@ -31,6 +28,7 @@ export const createUser = async ({
   const payload = {
     _id: savedUser._id,
     email: savedUser.email,
+    username: savedUser.username,
     isAdmin: savedUser.isAdmin,
   };
 
@@ -39,9 +37,8 @@ export const createUser = async ({
   });
 
   return {
-    firstName: savedUser.firstName,
-    lastName: savedUser.lastName,
     email: savedUser.email,
+    username: savedUser.username,
     _id: savedUser._id,
     isAdmin: savedUser.isAdmin,
     token,
@@ -68,6 +65,7 @@ export const signIn = async (email, password) => {
   const payload = {
     _id: user._id,
     email: user.email,
+    username: user.username,
     isAdmin: user.isAdmin,
   };
 
@@ -76,9 +74,8 @@ export const signIn = async (email, password) => {
   });
 
   return {
-    firstName: user.firstName,
-    lastName: user.lastName,
     email: user.email,
+    username: user.username,
     _id: user._id,
     isAdmin: user.isAdmin,
     token,
