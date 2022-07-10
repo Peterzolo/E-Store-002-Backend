@@ -10,37 +10,45 @@ import ApiError from '../../error/ApiError.js';
 import { findUserById } from '../user/user.dao.js';
 import Product from './product.model.js';
 import { createProduct } from './product.service.js';
+import cloudinary from '../../utils/cloudinary.js';
+
 
 export const postProduct = async (req, res) => {
   try {
     const {
       title,
       image,
+      cloudinary_id,
       category,
       model,
       color,
       description,
       price,
       brand,
+      modelNum,
       createdAt,
       status,
     } = req.body;
-
+    
     const userId = req.user;
+   
 
     if (userId.isAdmin === false) {
       return res.status(402).send({ message: 'You are not authorized' });
     }
-
+    const result = await cloudinary.uploader.upload(req.file.path);
+    console.log('RESULT',result)
     const dataObject = {
       title,
-      image,
+      image: result.secure_url,
+      cloudinary_id: result.public_id,
       category,
       model,
       color,
       description,
       price,
       brand,
+      modelNum,
       createdAt,
       status,
       createdAt: new Date().toString(),
@@ -69,7 +77,7 @@ export const getAllProducts = async (req, res) => {
       result: allProducts,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });   
   }
 };
 
@@ -95,7 +103,6 @@ export const getOneProduct = async (req, res) => {
 export const editProduct = async (req, res) => {
   try {
     const userId = req.user;
-    console.log('USER',userId)
 
     if (userId.isAdmin === false) {
       return res.status(402).send({ message: 'You are not authorized' });
@@ -103,6 +110,10 @@ export const editProduct = async (req, res) => {
 
     const id = req.params.id;
     const updateData = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: 'Invalid Id' });
+    }
 
     const findProduct = await findProductById(id);
 
@@ -113,7 +124,7 @@ export const editProduct = async (req, res) => {
     const query = id;
     const update = updateData;
 
-    let editedProduct = await updateProduct(query,update);
+    let editedProduct = await updateProduct(query, update);
 
     if (!editedProduct) {
       throw ApiError.notFound({ message: 'Could not edit product' });
@@ -130,37 +141,37 @@ export const editProduct = async (req, res) => {
 
 export const removeProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    const userId = req.userId._id;
+    const userId = req.user;
+
+    if (userId.isAdmin === false) {
+      return res.status(402).send({ message: 'You are not authorized' });
+    }
+
+    const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "User doesn't exist" });
     }
 
-    const findUser = await findUserById(userId);
-
-    // if (findUser._id.toString() !== userId) {
-    //   throw ApiError.forbidden({ message: "Not allowed" });
-    // }
-
     const findProduct = await findProductById(id);
 
     if (findProduct.status === 'inactive') {
-      throw ApiError.notFound({ message: 'Product not found' });
+      throw ApiError.notFound({ message: 'Product not available' });
     }
 
     const query = id;
-    const user = userId;
 
-    let deletedProduct = await deleteProduct(query, user);
+    await cloudinary.uploader.destroy(findProduct.cloudinary_id);
+
+    let deletedProduct = await deleteProduct(query);
 
     if (!deletedProduct) {
-      throw ApiError.notFound({ message: 'Product not available' });
+      throw ApiError.notFound({ message: 'Could not delete product' });
     }
     return res.status(200).send({
-      message: 'Product deleted successfully',
-      content: deletedProduct,
       success: true,
+      message: 'Product deleted successfully',
+      result: deletedProduct,
     });
   } catch (error) {
     res.status(400).json(error.message);

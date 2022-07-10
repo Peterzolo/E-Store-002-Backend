@@ -11,6 +11,9 @@ const ProductSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    cloudinary_id: {
+      type: String,
+    },
     category: {
       type: String,
       required: true,
@@ -23,7 +26,7 @@ const ProductSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    model: {
+    modelNum: {
       type: String,
       required: true,
     },
