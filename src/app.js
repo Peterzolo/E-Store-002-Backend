@@ -8,8 +8,8 @@ import { componentModule } from '../src/components/index.js';
 app.use(express.static('public'));
 
 app.use(morgan('dev'));
-app.use(express.json({ limit: '32mb', extended: true }));
-app.use(express.urlencoded({ limit: '32mb', extended: true }));
+app.use(express.json({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 

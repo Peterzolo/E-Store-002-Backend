@@ -12,7 +12,6 @@ import Product from './product.model.js';
 import { createProduct } from './product.service.js';
 import cloudinary from '../../utils/cloudinary.js';
 
-
 export const postProduct = async (req, res) => {
   try {
     const {
@@ -25,19 +24,18 @@ export const postProduct = async (req, res) => {
       description,
       price,
       brand,
-      modelNum,
+
       createdAt,
       status,
     } = req.body;
-    
+
     const userId = req.user;
-   
 
     if (userId.isAdmin === false) {
       return res.status(402).send({ message: 'You are not authorized' });
     }
     const result = await cloudinary.uploader.upload(req.file.path);
-    console.log('RESULT',result)
+
     const dataObject = {
       title,
       image: result.secure_url,
@@ -48,7 +46,7 @@ export const postProduct = async (req, res) => {
       description,
       price,
       brand,
-      modelNum,
+
       createdAt,
       status,
       createdAt: new Date().toString(),
@@ -77,7 +75,7 @@ export const getAllProducts = async (req, res) => {
       result: allProducts,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });   
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -102,37 +100,46 @@ export const getOneProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
   try {
-    const userId = req.user;
+    const { id } = req.params;
 
-    if (userId.isAdmin === false) {
-      return res.status(402).send({ message: 'You are not authorized' });
+    const product = await findProductById(id);
+    console.log('PRODUCT', product);
+
+    if (product.status === 'inactive') {
+      throw ApiError.notFound({ message: 'Event not found' });
     }
 
-    const id = req.params.id;
-    const updateData = req.body;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: 'Invalid Id' });
+    // Delete image from cloudinary
+    await cloudinary.uploader.destroy(product.cloudinary_id);
+    // Upload image to cloudinary
+    let result;
+    if (req.file) {
+      result = await cloudinary.uploader.upload(req.file.path);
     }
 
-    const findProduct = await findProductById(id);
+    const data = {
+      title: req.body.title || product.title,
+      category: req.body.category || product.category,
+      color: req.body.color || product.color,
+      price: req.body.price || product.price,
+      brand: req.body.brand || product.brand,
+      description: req.body.description || product.description,
+      title: req.body.title || product.title,
+      image: result?.secure_url || product.image,
+      cloudinary_id: result?.public_id || product.cloudinary_id,
+    };
 
-    if (findProduct.status === 'inactive') {
-      throw ApiError.notFound({ message: 'Product not available' });
-    }
+    console.log('UPDATE DATA', data);
 
-    const query = id;
-    const update = updateData;
-
-    let editedProduct = await updateProduct(query, update);
+    let editedProduct = await updateProduct(id, data);
 
     if (!editedProduct) {
-      throw ApiError.notFound({ message: 'Could not edit product' });
+      throw ApiError.notFound({ message: 'Product not available' });
     }
     return res.status(200).send({
-      success: true,
       message: 'Product updated successfully',
-      result: editedProduct,
+      content: editedProduct,
+      success: true,
     });
   } catch (error) {
     res.status(400).json(error.message);
@@ -159,9 +166,9 @@ export const removeProduct = async (req, res) => {
       throw ApiError.notFound({ message: 'Product not available' });
     }
 
-    const query = id;
-
     await cloudinary.uploader.destroy(findProduct.cloudinary_id);
+
+    const query = id;
 
     let deletedProduct = await deleteProduct(query);
 

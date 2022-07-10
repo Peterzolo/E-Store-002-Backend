@@ -26,10 +26,7 @@ const ProductSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    modelNum: {
-      type: String,
-      required: true,
-    },
+  
     description: {
       type: String,
       required: true,

@@ -19,7 +19,7 @@ import { upload } from '../../utils/multer.js';
 productRouter.post('/create', authorizedAndAdmin,upload.single("image"), postProduct);
 productRouter.get('/fetch-all', getAllProducts);
 productRouter.get('/fetch-one/:id', getOneProduct);
-productRouter.put('/edit/:id', authorizedAndAdmin, editProduct);
+productRouter.put('/edit/:id',upload.single("image"), authorizedAndAdmin, editProduct);
 productRouter.delete('/remove/:id', authorizedAndAdmin, removeProduct);
 productRouter.get('/search', searchProductByTitle);
 productRouter.post('/related-products', getRelatedProducts);

@@ -35,22 +35,20 @@ export const createProduct = async ({
   const productExists = await findProductByName({ title });
 
   if (productExists) {
-    throw ApiError.alreadyExists({message :
-      'Product with this title has already been created'}
-    );
+    throw ApiError.alreadyExists({
+      message: 'Product with this title has already been created',
+    });
   }
 
   const product = await saveProductPayload(productObject);
   return {
     createdAt: new Date().toISOString(),
-  
     title: product.title,
     image: product.image,
     cloudinary_id: product.cloudinary_id,
     category: product.category,
     color: product.color,
     description: product.description,
-    modelNum : product.modelName,
     price: product.price,
     brand: product.brand,
     status: product.status,
